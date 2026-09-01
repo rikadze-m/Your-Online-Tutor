@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>მარიამი — მათემატიკის გაკვეთილები · Mariam — Math Tutoring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Georgian:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F3EA;
+    --paper-soft:#EFE9DA;
+    --ink:#182238;
+    --ink-soft:#3A3F4C;
+    --cream:#F6F3EA;
+    --gold:#B07C2C;
+    --gold-dark:#8F631F;
+    --teal:#5C7A80;
+    --line:rgba(24,34,56,0.14);
+    --grid:rgba(24,34,56,0.055);
+    --radius:2px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+      var(--paper);
+    background-size:44px 44px, 44px 44px, cover;
+    color:var(--ink-soft);
+    font-family:'IBM Plex Sans','IBM Plex Sans Georgian',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{
+    font-family:'Fraunces','IBM Plex Sans Georgian',serif;
+    color:var(--ink);
+    margin:0 0 0.4em 0;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+
+  a{color:inherit;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  /* --- language toggling: elements keep natural display, we only ever add display:none --- */
+  body:not(.show-en) .lang-en{display:none !important;}
+  body.show-en .lang-ka{display:none !important;}
+
+  .wrap{max-width:1080px; margin:0 auto; padding:0 32px;}
+  @media(max-width:640px){ .wrap{padding:0 20px;} }
+
+  /* header */
+  header.site-header{
+    position:sticky; top:0; z-index:20;
+    background:rgba(246,243,234,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .header-inner{
+    display:flex; align-items:center; justify-content:flex-end;
+    padding:18px 0;
+  }
+  .lang-toggle{display:flex; gap:2px; border:1px solid var(--line); border-radius:999px; padding:3px;}
+  .lang-toggle button{
+    border:none; background:transparent; cursor:pointer;
+    padding:6px 16px; border-radius:999px; font-size:0.85rem;
+    font-family:'IBM Plex Sans',sans-serif; color:var(--ink-soft);
+    transition:background .2s, color .2s;
+  }
+  .lang-toggle button.active{background:var(--ink); color:var(--paper);}
+
+  /* hero */
+  .hero{padding:96px 0 88px; position:relative; overflow:hidden;}
+  .hero-inner{display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center;}
+  @media(max-width:860px){ .hero-inner{grid-template-columns:1fr;} }
+  .hero h1{font-size:clamp(2.1rem, 4vw, 3.1rem); line-height:1.12; max-width:14ch;}
+  .hero .lead{font-size:1.1rem; color:var(--ink-soft); max-width:46ch; margin:18px 0 32px;}
+  .hero-actions{display:flex; gap:14px; flex-wrap:wrap;}
+
+  .btn{
+    display:inline-block; padding:13px 26px; border-radius:999px;
+    font-size:0.95rem; font-weight:500; text-decoration:none;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary{background:var(--gold); color:var(--paper);}
+  .btn-primary:hover{background:var(--gold-dark); transform:translateY(-1px);}
+  .btn-ghost{border:1px solid var(--line); color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--ink);}
+
+  .hero-visual{
+    padding:12px 0; display:flex; flex-direction:column;
+    align-items:center; gap:16px;
+  }
+  @media(max-width:860px){ .hero-visual{max-width:320px; margin:0 auto;} }
+  .visual-equation{color:var(--gold); font-size:0.95rem;}
+  #pi-canvas{width:100%; max-width:288px; height:auto; aspect-ratio:1/1; display:block; transition:opacity 0.9s ease;}
+
+  /* section rhythm */
+  section{padding:76px 0;}
+  .section-soft{background:var(--paper-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .kicker{font-size:0.95rem; color:var(--teal); font-family:'IBM Plex Mono',monospace; margin-bottom:10px;}
+  .section-head{max-width:56ch; margin-bottom:44px;}
+  .section-head p{color:var(--ink-soft); font-size:1.05rem;}
+
+  /* about */
+  .about-grid{display:grid; grid-template-columns:0.8fr 1.2fr; gap:56px; align-items:start;}
+  @media(max-width:780px){ .about-grid{grid-template-columns:1fr; gap:28px;} }
+  .credentials{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px;}
+  .credentials li{
+    padding-left:20px; position:relative; font-size:0.98rem; color:var(--ink-soft);
+  }
+  .credentials li::before{
+    content:""; position:absolute; left:0; top:9px; width:7px; height:7px;
+    background:var(--gold); border-radius:50%;
+  }
+  .about-text p{font-size:1.06rem;}
+
+  /* offer list */
+  .offer-list{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:0;}
+  @media(max-width:700px){ .offer-list{grid-template-columns:1fr;} }
+  .offer-list li{
+    border-left:2px solid var(--gold); padding:6px 0 6px 22px; margin:0 24px 30px 0;
+  }
+  .offer-list h3{font-size:1.08rem; margin-bottom:6px;}
+  .offer-list p{margin:0; color:var(--ink-soft); font-size:0.98rem;}
+
+  /* subjects */
+  .subjects-grid{display:grid; grid-template-columns:1fr 1px 1fr; gap:48px; align-items:start;}
+  @media(max-width:780px){ .subjects-grid{grid-template-columns:1fr; gap:32px;} }
+  .subjects-grid .divider{background:var(--line);}
+  @media(max-width:780px){ .subjects-grid .divider{display:none;} }
+  .subjects-grid h3{font-size:1.2rem; margin-bottom:14px;}
+  .subjects-grid .range{
+    font-family:'IBM Plex Mono',monospace; color:var(--gold); font-size:1.6rem; display:block; margin-bottom:6px;
+  }
+  .subjects-grid ul{margin:14px 0 0; padding-left:20px; color:var(--ink-soft);}
+  .subjects-grid li{margin-bottom:6px;}
+
+  /* how it works */
+  .steps{list-style:none; margin:0; padding:0; counter-reset:step; display:grid; gap:28px;}
+  .steps li{display:flex; gap:20px; align-items:flex-start;}
+  .steps .num{
+    font-family:'IBM Plex Mono',monospace; color:var(--gold); font-size:1.1rem;
+    border:1px solid var(--line); border-radius:50%; width:40px; height:40px;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; background:var(--paper);
+  }
+  .steps h3{font-size:1.05rem; margin-bottom:4px;}
+  .steps p{margin:0; color:var(--ink-soft); font-size:0.98rem;}
+
+  /* contact */
+  .contact{background:var(--ink); color:var(--paper);}
+  .contact h2{color:var(--paper);}
+  .contact .section-head p{color:rgba(246,243,234,0.78);}
+  .contact-inner{display:flex; flex-direction:column; align-items:flex-start; gap:22px;}
+  .contact .btn-primary{padding:15px 32px; font-size:1rem;}
+  .contact-details{margin-top:4px;}
+  .contact-name{margin:0 0 4px; font-family:'Fraunces','IBM Plex Sans Georgian',serif; font-size:1.05rem; color:var(--paper);}
+  .contact-phone{margin:0; font-size:0.95rem;}
+  .contact-phone a{color:rgba(246,243,234,0.78); text-decoration:none; border-bottom:1px solid rgba(246,243,234,0.35);}
+  .contact-phone a:hover{color:var(--paper); border-color:var(--paper);}
+
+  footer{padding:28px 0; background:var(--ink); border-top:1px solid rgba(246,243,234,0.12);}
+  footer .wrap{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;}
+  footer, footer a{color:rgba(246,243,234,0.6); font-size:0.85rem;}
+</style>
+</head>
+<body class="show-ka">
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <nav class="lang-toggle">
+      <button type="button" data-lang="ka" class="active">ქართ</button>
+      <button type="button" data-lang="en">EN</button>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <h1 class="lang-ka">მათემატიკა, გაგებული — თქვენი ტემპით</h1>
+      <h1 class="lang-en">Math, understood — at your pace</h1>
+
+      <p class="lead lang-ka">ინდივიდუალური, შედეგზე ორიენტირებული გაკვეთილები მე-5-დან მე-12 კლასამდე, ასევე საუნივერსიტეტო საგნებში. გაკვეთილები მიმდინარეობს ონლაინ, ქართულ ან ინგლისურ ენაზე.</p>
+      <p class="lead lang-en">Individual, results-focused lessons for grades 5 through 12, plus university-level subjects. Lessons run online, in Georgian or English.</p>
+
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary lang-ka">უფასო საცდელი გაკვეთილი</a>
+        <a href="#contact" class="btn btn-primary lang-en">Free trial lesson</a>
+        <a href="#offer" class="btn btn-ghost lang-ka">რას გთავაზობთ</a>
+        <a href="#offer" class="btn btn-ghost lang-en">What's included</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <canvas id="pi-canvas" width="340" height="340" role="img" aria-label="Animated curve traced by z of theta equals e to the i theta plus e to the i pi theta, forming a pattern that never quite repeats because pi is irrational"></canvas>
+      <div class="visual-equation mono">z(θ) = e<sup>θi</sup> + e<sup>πθi</sup></div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="section-head" style="margin-bottom:0;">
+      <div class="kicker lang-ka">ჩემს შესახებ</div>
+      <div class="kicker lang-en">About me</div>
+      <h2 class="lang-ka">მარიამი</h2>
+      <h2 class="lang-en">Mariam</h2>
+    </div>
+    <div>
+      <div class="about-text">
+        <p class="lang-ka">ვსწავლობ ქუთაისის საერთაშორისო უნივერსიტეტში (KIU), მათემატიკისა და გამოყენებების ინგლისურენოვან საბაკალავრო პროგრამაზე — სპეციალობით Foundations of Artificial Intelligence, Scientific Computing, and Financial Mathematics.</p>
+        <p class="lang-en">I'm studying at Kutaisi International University (KIU), in the English-language Bachelor's program in Mathematics &amp; Applications — specializing in Foundations of Artificial Intelligence, Scientific Computing, and Financial Mathematics.</p>
+      </div>
+      <ul class="credentials">
+        <li class="lang-ka">ვსწავლობ 100%-იანი სახელმწიფო გრანტით</li>
+        <li class="lang-en">Studying on a full (100%) state grant</li>
+        <li class="lang-ka">ჩაბარებული მაქვს მასწავლებლის სასერთიფიკაციო გამოცდა</li>
+        <li class="lang-en">Passed the teacher certification exam</li>
+        <li class="lang-ka">მაქვს მოსწავლეებთან მუშაობის გამოცდილება</li>
+        <li class="lang-en">Experienced working with students</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section-soft" id="offer">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker lang-ka">რას გთავაზობთ</div>
+      <div class="kicker lang-en">What you get</div>
+      <h2 class="lang-ka">მიდგომა, მორგებული თქვენზე</h2>
+      <h2 class="lang-en">An approach built around you</h2>
+    </div>
+    <ul class="offer-list">
+      <li>
+        <h3 class="lang-ka">ინდივიდუალური, შედეგზე ორიენტირებული გაკვეთილები</h3>
+        <h3 class="lang-en">Individual, results-oriented lessons</h3>
+        <p class="lang-ka">ყურადღება მთლიანად თქვენს მიზნებზეა — არა ჯგუფურ ტემპზე.</p>
+        <p class="lang-en">Full attention on your goals — not a group's pace.</p>
+      </li>
+      <li>
+        <h3 class="lang-ka">მასალის სრულფასოვანი მომზადება</h3>
+        <h3 class="lang-en">Thorough preparation of material</h3>
+        <p class="lang-ka">ყოველი გაკვეთილი წინასწარაა დაგეგმილი და მომზადებული.</p>
+        <p class="lang-en">Every lesson is planned and prepared in advance.</p>
+      </li>
+      <li>
+        <h3 class="lang-ka">სკოლის პროგრამის უკეთ გააზრება</h3>
+        <h3 class="lang-en">A stronger grasp of the school curriculum</h3>
+        <p class="lang-ka">ვხსნით არა მხოლოდ "როგორ", არამედ "რატომ".</p>
+        <p class="lang-en">We work through not just "how," but "why."</p>
+      </li>
+      <li>
+        <h3 class="lang-ka">დონესა და ტემპზე მორგებული მიდგომა</h3>
+        <h3 class="lang-en">Approach tailored to level and pace</h3>
+        <p class="lang-ka">ვიწყებთ იქიდან, სადაც რეალურად ხართ.</p>
+        <p class="lang-en">We start from exactly where you are.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section id="subjects">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker lang-ka">საგნები</div>
+      <div class="kicker lang-en">Subjects</div>
+      <h2 class="lang-ka">სკოლიდან უნივერსიტეტამდე</h2>
+      <h2 class="lang-en">From school to university</h2>
+    </div>
+    <div class="subjects-grid">
+      <div>
+        <span class="range mono">V–XII</span>
+        <h3 class="lang-ka">სკოლის მათემატიკა</h3>
+        <h3 class="lang-en">School mathematics</h3>
+        <p class="lang-ka">სრული სასკოლო პროგრამა მე-5-დან მე-12 კლასის ჩათვლით.</p>
+        <p class="lang-en">Full school curriculum, from grade 5 through grade 12.</p>
+      </div>
+      <div class="divider"></div>
+      <div>
+        <span class="range mono">UNI</span>
+        <h3 class="lang-ka">საუნივერსიტეტო საგნები</h3>
+        <h3 class="lang-en">University-level subjects</h3>
+        <ul>
+          <li class="lang-ka">მათემატიკური ანალიზი</li>
+          <li class="lang-en">Calculus / mathematical analysis</li>
+          <li class="lang-ka">სტატისტიკა</li>
+          <li class="lang-en">Statistics</li>
+          <li class="lang-ka">ფინანსური მათემატიკა</li>
+          <li class="lang-en">Financial mathematics</li>
+          <li class="lang-ka">ხელოვნური ინტელექტისა და გამოთვლითი მეცნიერების საფუძვლები</li>
+          <li class="lang-en">Foundations of AI &amp; scientific computing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-soft">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker lang-ka">როგორ მიმდინარეობს</div>
+      <div class="kicker lang-en">How it works</div>
+      <h2 class="lang-ka">დაწყება მარტივია</h2>
+      <h2 class="lang-en">Getting started is simple</h2>
+    </div>
+    <ul class="steps">
+      <li>
+        <div class="num mono">1</div>
+        <div>
+          <h3 class="lang-ka">უფასო საცდელი გაკვეთილი</h3>
+          <h3 class="lang-en">Free trial lesson</h3>
+          <p class="lang-ka">ერთმანეთს ვეცნობით და ვაფასებთ საწყის დონეს.</p>
+          <p class="lang-en">We get to know each other and assess your starting level.</p>
+        </div>
+      </li>
+      <li>
+        <div class="num mono">2</div>
+        <div>
+          <h3 class="lang-ka">ინდივიდუალური გეგმა</h3>
+          <h3 class="lang-en">A personal plan</h3>
+          <p class="lang-ka">ვგეგმავთ სასწავლო გეგმას თქვენს მიზნებზე დაყრდნობით.</p>
+          <p class="lang-en">We build a study plan based on your specific goals.</p>
+        </div>
+      </li>
+      <li>
+        <div class="num mono">3</div>
+        <div>
+          <h3 class="lang-ka">რეგულარული ონლაინ გაკვეთილები</h3>
+          <h3 class="lang-en">Regular online lessons</h3>
+          <p class="lang-ka">თანამედროვე, კომფორტულ ფორმატში — ქართულად ან ინგლისურად.</p>
+          <p class="lang-en">In a modern, comfortable format — in Georgian or English.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker" style="color:#B07C2C;">
+        <span class="lang-ka">დაიწყეთ დღეს</span>
+        <span class="lang-en">Start today</span>
+      </div>
+      <h2 class="lang-ka">დაინტერესებული ხართ?</h2>
+      <h2 class="lang-en">Interested?</h2>
+      <p class="lang-ka">დაინტერესების შემთხვევაში მომწერეთ პირად შეტყობინებაში — პირველი საცდელი გაკვეთილი უფასოა.</p>
+      <p class="lang-en">If you're interested, message me directly — the first trial lesson is free.</p>
+    </div>
+    <div class="contact-inner">
+      <!-- TODO: replace YOUR_EMAIL@example.com with your real email address -->
+      <a href="mailto:YOUR_EMAIL@example.com" class="btn btn-primary lang-ka">მომწერეთ მეილზე</a>
+      <a href="mailto:YOUR_EMAIL@example.com" class="btn btn-primary lang-en">Email me</a>
+      <div class="contact-details">
+        <p class="contact-name">მარიამ რიკაძე</p>
+        <p class="contact-phone"><a href="tel:+995579192118">+995 579 19 21 18</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 მარიამ რიკაძე</span>
+    <span class="lang-ka">KIU · მათემატიკა და გამოყენებები</span>
+    <span class="lang-en">KIU · Mathematics &amp; Applications</span>
+  </div>
+</footer>
+
+<script>
+  var buttons = document.querySelectorAll('.lang-toggle button');
+  buttons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var lang = btn.getAttribute('data-lang');
+      document.body.classList.toggle('show-en', lang === 'en');
+      document.documentElement.setAttribute('lang', lang);
+      buttons.forEach(function(b){ b.classList.toggle('active', b === btn); });
+    });
+  });
+
+  // Animated spirograph: z(theta) = e^(i*theta) + e^(i*pi*theta)
+  (function(){
+    var canvas = document.getElementById('pi-canvas');
+    if(!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext('2d');
+    var dpr = window.devicePixelRatio || 1;
+    var size = 340;
+    canvas.width = size * dpr;
+    canvas.height = size * dpr;
+    ctx.scale(dpr, dpr);
+
+    var cx = size / 2, cy = size / 2, scale = size * 0.235;
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function pointAt(theta){
+      var x = Math.cos(theta) + Math.cos(Math.PI * theta);
+      var y = Math.sin(theta) + Math.sin(Math.PI * theta);
+      return { x: cx + x * scale, y: cy - y * scale };
+    }
+
+    var thetaMax = 140;
+    var dTheta = 0.02;
+
+    function drawFull(){
+      ctx.clearRect(0, 0, size, size);
+      ctx.strokeStyle = 'rgba(176,124,44,0.6)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      var p0 = pointAt(0);
+      ctx.moveTo(p0.x, p0.y);
+      for(var t = dTheta; t <= thetaMax; t += dTheta){
+        var p = pointAt(t);
+        ctx.lineTo(p.x, p.y);
+      }
+      ctx.stroke();
+    }
+
+    if(reduceMotion){
+      drawFull();
+      return;
+    }
+
+    var theta = 0;
+    var last = null;
+    var pointsPerFrame = 14;
+    var pausedUntil = 0;
+    var fading = false;
+
+    function frame(now){
+      if(fading) return; // opacity transition handles this phase, then reset() takes over
+      if(theta === 0 && !last){
+        ctx.clearRect(0, 0, size, size);
+        last = pointAt(0);
+      }
+      if(theta < thetaMax){
+        ctx.strokeStyle = 'rgba(176,124,44,0.6)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(last.x, last.y);
+        for(var i = 0; i < pointsPerFrame && theta < thetaMax; i++){
+          theta += dTheta;
+          last = pointAt(theta);
+          ctx.lineTo(last.x, last.y);
+        }
+        ctx.stroke();
+        requestAnimationFrame(frame);
+      } else {
+        if(!pausedUntil){ pausedUntil = now + 2200; }
+        if(now < pausedUntil){
+          requestAnimationFrame(frame);
+        } else {
+          fading = true;
+          canvas.style.opacity = '0';
+          setTimeout(function(){
+            theta = 0; last = null; pausedUntil = 0; fading = false;
+            canvas.style.opacity = '1';
+            requestAnimationFrame(frame);
+          }, 900);
+        }
+      }
+    }
+    requestAnimationFrame(frame);
+  })();
+</script>
+
+</body>
+</html>
