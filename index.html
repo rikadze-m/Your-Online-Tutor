@@ -49,6 +49,11 @@
   a{color:inherit;}
   .mono{font-family:'IBM Plex Mono',monospace;}
 
+  :focus-visible{outline:2px solid var(--burgundy); outline-offset:3px; border-radius:2px;}
+  .contact :focus-visible{outline-color:var(--burgundy-light);}
+
+  #about, #offer, #subjects, #pricing, #contact{scroll-margin-top:88px;}
+
   /* --- language toggling: elements keep natural display, we only ever add display:none --- */
   body:not(.show-en) .lang-en{display:none !important;}
   body.show-en .lang-ka{display:none !important;}
@@ -97,13 +102,24 @@
   .btn-primary{background:var(--burgundy); color:var(--paper);}
   .btn-primary:hover{background:var(--burgundy-dark); transform:translateY(-1px);}
   .btn-ghost{border:1px solid var(--line); color:var(--ink);}
-  .btn-ghost:hover{border-color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--burgundy); color:var(--burgundy); transform:translateY(-1px);}
 
   .hero-visual{
     padding:12px 0; display:flex; flex-direction:column;
-    align-items:center; gap:16px;
+    align-items:center; gap:18px;
   }
   @media(max-width:860px){ .hero-visual{max-width:320px; margin:0 auto;} }
+  .visual-frame{
+    position:relative; width:100%; max-width:312px;
+    padding:22px; background:var(--paper-soft);
+    border:1px solid var(--line); border-radius:4px;
+    box-shadow:0 1px 2px rgba(30,27,36,0.04), 0 22px 44px -26px rgba(30,27,36,0.4);
+  }
+  .visual-frame::before, .visual-frame::after{
+    content:""; position:absolute; width:18px; height:18px; pointer-events:none;
+  }
+  .visual-frame::before{ top:-6px; left:-6px; border-top:2px solid var(--burgundy); border-left:2px solid var(--burgundy); }
+  .visual-frame::after{ bottom:-6px; right:-6px; border-bottom:2px solid var(--burgundy); border-right:2px solid var(--burgundy); }
   .visual-equation{color:var(--burgundy); font-size:0.95rem;}
   #pi-canvas{width:100%; max-width:288px; height:auto; aspect-ratio:1/1; display:block; transition:opacity 0.9s ease;}
 
@@ -132,12 +148,26 @@
   .about-grid{display:grid; grid-template-columns:0.8fr 1.2fr; gap:56px; align-items:start;}
   @media(max-width:780px){ .about-grid{grid-template-columns:1fr; gap:28px;} }
   .about-photo{
-    width:180px; height:220px; margin-top:22px; border-radius:10px; overflow:hidden;
+    position:relative;
+    width:100%; max-width:130px; aspect-ratio:1/1;
+    margin-top:26px; padding:5px;
+    background:var(--paper);
+    border-radius:50%;
+    border:1px solid var(--line);
+    box-shadow:0 1px 2px rgba(30,27,36,0.05), 0 14px 26px -16px rgba(30,27,36,0.45);
+  }
+  .about-photo::before{
+    content:""; position:absolute; inset:-5px; border-radius:50%;
+    border:1px solid var(--burgundy); opacity:0.55; pointer-events:none;
+  }
+  .about-photo .frame-inner{
+    width:100%; height:100%; border-radius:50%; overflow:hidden;
     background:var(--paper-soft); border:1px solid var(--line);
     display:flex; align-items:center; justify-content:center;
   }
-  .about-photo img{width:100%; height:100%; object-fit:cover; display:block;}
-  .about-photo.no-photo::after{content:"profile.jpg"; font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-soft); opacity:0.55;}
+  .about-photo img{width:100%; height:100%; object-fit:cover; object-position:center 18%; display:block;}
+  .about-photo.no-photo .frame-inner::after{content:"profile.jpg"; font-family:'IBM Plex Mono',monospace; font-size:0.68rem; color:var(--ink-soft); opacity:0.55; padding:0 8px; text-align:center;}
+  @media(max-width:780px){ .about-photo{ margin-left:auto; margin-right:auto; } }
   .credentials{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px;}
   .credentials li{
     padding-left:20px; position:relative; font-size:0.98rem; color:var(--ink-soft);
@@ -153,7 +183,9 @@
   @media(max-width:700px){ .offer-list{grid-template-columns:1fr;} }
   .offer-list li{
     border-left:2px solid var(--burgundy); padding:6px 0 6px 22px; margin:0 24px 30px 0;
+    transition:padding-left .2s ease, border-color .2s ease;
   }
+  .offer-list li:hover{ padding-left:28px; border-color:var(--burgundy-dark); }
   .offer-list h3{font-size:1.08rem; margin-bottom:6px;}
   .offer-list p{margin:0; color:var(--ink-soft); font-size:0.98rem;}
 
@@ -189,17 +221,52 @@
     font-family:'IBM Plex Mono',monospace; color:var(--burgundy); font-size:1.1rem;
     border:1px solid var(--line); border-radius:50%; width:40px; height:40px;
     display:flex; align-items:center; justify-content:center; flex-shrink:0; background:var(--paper);
+    transition:border-color .2s ease, background .2s ease;
   }
+  .steps li:hover .num{ border-color:var(--burgundy); background:var(--paper-soft); }
   .steps h3{font-size:1.05rem; margin-bottom:4px;}
   .steps p{margin:0; color:var(--ink-soft); font-size:0.98rem;}
+
+  /* cost & availability */
+  .session-grid{display:grid; grid-template-columns:1fr 1px 1fr; gap:52px; align-items:start;}
+  @media(max-width:780px){ .session-grid{grid-template-columns:1fr; gap:40px;} }
+  .session-divider{background:var(--line);}
+  @media(max-width:780px){ .session-divider{display:none;} }
+  .session-grid h3{font-size:1.15rem; margin-bottom:14px;}
+  .session-grid > div > p{font-size:1.02rem; margin:0 0 8px;}
+  .session-subhead{margin:22px 0 6px !important; font-size:0.95rem !important; color:var(--ink) !important; font-weight:500;}
+
+  .dot-list{list-style:none; margin:18px 0 0; padding:0; display:flex; flex-direction:column; gap:14px;}
+  .dot-list li{ position:relative; padding-left:20px; font-size:0.97rem; color:var(--ink-soft); }
+  .dot-list li::before{ content:""; position:absolute; left:2px; top:9px; width:6px; height:6px; border-radius:50%; background:var(--burgundy); }
 
   /* contact */
   .contact{background:var(--ink); color:var(--paper);}
   .contact h2{color:var(--paper);}
   .contact .section-head p{color:rgba(246,243,234,0.78);}
   .contact-inner{display:flex; flex-direction:column; align-items:flex-start; gap:28px;}
-  .contact-buttons{display:flex; flex-wrap:wrap; gap:14px;}
+  .contact-buttons{display:flex; flex-wrap:wrap; gap:12px;}
   .contact .btn-primary{padding:15px 32px; font-size:1rem;}
+
+  .platform-btn{
+    display:inline-flex; align-items:center; gap:12px;
+    padding:8px 22px 8px 8px; border-radius:999px;
+    background:rgba(246,243,234,0.05);
+    border:1px solid rgba(246,243,234,0.16);
+    text-decoration:none; color:var(--paper);
+    font-size:0.95rem; font-weight:500;
+    transition:background .2s ease, border-color .2s ease, transform .15s ease;
+  }
+  .platform-btn:hover{ background:rgba(246,243,234,0.1); border-color:rgba(246,243,234,0.32); transform:translateY(-1px); }
+  .platform-icon{
+    width:38px; height:38px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .platform-icon svg{ width:19px; height:19px; display:block; }
+  .platform-icon.email{ background:var(--burgundy-light); }
+  .platform-icon.whatsapp{ background:#2FBE5A; }
+  .platform-icon.viber{ background:#7D5FEA; }
+  .platform-icon.messenger{ background:linear-gradient(135deg,#2AA8F2,#7B4DE0); }
   .contact-details{margin-top:0;}
   .contact-name{margin:0 0 4px; font-family:'Fraunces','IBM Plex Sans Georgian',serif; font-size:1.05rem; color:var(--paper);}
   .contact-phone{margin:0; font-size:0.95rem;}
@@ -240,39 +307,45 @@
     </div>
 
     <div class="hero-visual">
-      <canvas id="pi-canvas" width="340" height="340" role="img" aria-label="Animated curve traced by z of theta equals e to the i theta plus e to the i pi theta, forming a pattern that never quite repeats because pi is irrational"></canvas>
+      <div class="visual-frame">
+        <canvas id="pi-canvas" width="340" height="340" role="img" aria-label="Animated curve traced by z of theta equals e to the i theta plus e to the i pi theta, forming a pattern that never quite repeats because pi is irrational"></canvas>
+      </div>
       <div class="visual-equation mono">z(θ) = e<sup>θi</sup> + e<sup>πθi</sup></div>
     </div>
   </div>
 </section>
 
 <section id="about">
-  <div class="wrap about-grid">
-    <div class="section-head" style="margin-bottom:0;">
-      <div class="kicker lang-ka">ჩემს შესახებ</div>
-      <div class="kicker lang-en">About me</div>
-      <h2 class="lang-ka">მარიამ რიკაძე</h2>
-      <h2 class="lang-en">Mariam Rikadze</h2>
-      <!-- TODO: upload a photo named profile.jpg to the same folder as index.html on GitHub -->
-      <div class="about-photo">
-        <img src="profile.jpg" alt="მარიამ რიკაძე" onerror="this.parentElement.classList.add('no-photo'); this.remove();">
+  <div class="wrap">
+    <div class="kicker lang-ka">ჩემს შესახებ</div>
+    <div class="kicker lang-en">About me</div>
+    <div class="about-grid">
+      <div class="section-head" style="margin-bottom:0;">
+        <h2 class="lang-ka">მარიამ რიკაძე</h2>
+        <h2 class="lang-en">Mariam Rikadze</h2>
+        <!-- TODO: upload a photo named profile.jpg to the same folder as index.html on GitHub -->
+        <div class="about-photo">
+          <div class="frame-inner">
+            <img src="profile.jpg" alt="მარიამ რიკაძე" onerror="this.parentElement.parentElement.classList.add('no-photo'); this.remove();">
+          </div>
+        </div>
       </div>
-    </div>
-    <div>
-      <div class="about-text">
-        <p class="lang-ka">ვსწავლობ ქუთაისის საერთაშორისო უნივერსიტეტში (KIU), მათემატიკისა და გამოყენებების ინგლისურენოვან საბაკალავრო პროგრამაზე.</p>
-        <p class="lang-en">I'm studying at Kutaisi International University (KIU), in the English-language Bachelor's program in Mathematics &amp; Applications.</p>
+      <div>
+        <div class="about-text">
+          <p class="lang-ka">ვსწავლობ ქუთაისის საერთაშორისო უნივერსიტეტში (KIU), მათემატიკისა და გამოყენებების ინგლისურენოვან საბაკალავრო პროგრამაზე.</p>
+          <p class="lang-en">I'm studying at Kutaisi International University (KIU), in the English-language Bachelor's program in Mathematics &amp; Applications.</p>
+        </div>
+        <ul class="credentials">
+          <li class="lang-ka">სკოლა დავასრულე ოქროს მედალზე</li>
+          <li class="lang-en">Graduated with a Gold Medal</li>
+          <li class="lang-ka">ვსწავლობ 100%-იანი სახელმწიფო გრანტით</li>
+          <li class="lang-en">Studying on a full (100%) state grant</li>
+          <li class="lang-ka">წარმატებით ჩავაბარე მასწავლებლის სასერტიფიკაციო გამოცდა (VII-XII)</li>
+          <li class="lang-en">Successfully passed the Teacher Certification Examination</li>
+          <li class="lang-ka">მაქვს მოსწავლეებთან მუშაობის გამოცდილება</li>
+          <li class="lang-en">Experienced working with students</li>
+        </ul>
       </div>
-      <ul class="credentials">
-        <li class="lang-ka">სკოლა დავასრულე ოქროს მედალზე</li>
-        <li class="lang-en">Graduated with a Gold Medal</li>
-        <li class="lang-ka">ვსწავლობ 100%-იანი სახელმწიფო გრანტით</li>
-        <li class="lang-en">Studying on a full (100%) state grant</li>
-        <li class="lang-ka">წარმატებით ჩავაბარე მასწავლებლის სასერტიფიკაციო გამოცდა (VII-XII)</li>
-        <li class="lang-en">Successfully passed the Teacher Certification Examination</li>
-        <li class="lang-ka">მაქვს მოსწავლეებთან მუშაობის გამოცდილება</li>
-        <li class="lang-en">Experienced working with students</li>
-      </ul>
     </div>
   </div>
 </section>
@@ -412,6 +485,66 @@
   </div>
 </section>
 
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker lang-ka">სასწავლო პროცესის ორგანიზება</div>
+      <div class="kicker lang-en">Learning Process Planning</div>
+      <h2 class="lang-ka">ღირებულება და ხელმისაწვდომობა</h2>
+      <h2 class="lang-en">Cost &amp; Availability</h2>
+    </div>
+
+    <div class="session-grid">
+      <div>
+        <h3 class="lang-ka">სასწავლო სესიის ღირებულება</h3>
+        <h3 class="lang-en">Cost of a Learning Session</h3>
+        <p class="lang-ka">სასწავლო სესიის ღირებულება განისაზღვრება ინდივიდუალური საჭიროებების, სასწავლო მიზნებისა და პროგრამის სპეციფიკის გათვალისწინებით.</p>
+        <p class="lang-en">The cost of a learning session is determined by taking into account the student's individual needs, learning goals, and the specifics of the program.</p>
+
+        <p class="session-subhead lang-ka">ღირებულების განსაზღვრის ძირითადი კრიტერიუმებია:</p>
+        <p class="session-subhead lang-en">The main criteria used to determine the cost are:</p>
+
+        <ul class="dot-list">
+          <li class="lang-ka">სასწავლო სესიის ხანგრძლივობა</li>
+          <li class="lang-en">Duration of the learning session</li>
+
+          <li class="lang-ka">მოსწავლის ინდივიდუალური შესაძლებლობები და საგანმანათლებლო საჭიროებები</li>
+          <li class="lang-en">The student's individual abilities and educational needs</li>
+
+          <li class="lang-ka">სასწავლო მიზანი და პროგრამის მიმართულება — სასკოლო პროგრამა, საგამოცდო მომზადება ან საუნივერსიტეტო კურსი</li>
+          <li class="lang-en">The learning goal and program focus — school curriculum, exam preparation, or a university-level course</li>
+
+          <li class="lang-ka">სესიების სიხშირე და სასწავლო დაგეგმვა</li>
+          <li class="lang-en">Session frequency and study planning</li>
+        </ul>
+      </div>
+
+      <div class="session-divider"></div>
+
+      <div>
+        <h3 class="lang-ka">სასწავლო დრო და ხელმისაწვდომობა</h3>
+        <h3 class="lang-en">Schedule &amp; Availability</h3>
+        <p class="lang-ka">სასწავლო სესიების დრო განისაზღვრება წინასწარი შეთანხმებისა და ორივე მხარის ხელმისაწვდომობის გათვალისწინებით.</p>
+        <p class="lang-en">Session times are arranged in advance, taking into account the availability of both parties.</p>
+
+        <ul class="dot-list">
+          <li class="lang-ka">სესიები იგეგმება ინდივიდუალური საჭიროებების შესაბამისად</li>
+          <li class="lang-en">Sessions are scheduled according to individual needs</li>
+
+          <li class="lang-ka">შესაძლებელია როგორც სამუშაო დღეებში, ისე შაბათ-კვირას</li>
+          <li class="lang-en">Available on both weekdays and weekends</li>
+
+          <li class="lang-ka">დროის შერჩევა ხდება წინასწარი შეთანხმებით</li>
+          <li class="lang-en">Time slots are arranged in advance, by mutual agreement</li>
+
+          <li class="lang-ka">უნივერსიტეტში სწავლის პარალელურად, ვცდილობ, შევათავსო მოქნილი და მოსწავლის რეჟიმზე მორგებული გრაფიკი</li>
+          <li class="lang-en">Alongside my own university studies, I aim to offer a flexible schedule, adapted to the student's routine</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="contact" id="contact">
   <div class="wrap">
     <div class="section-head">
@@ -428,20 +561,60 @@
 
       <div class="contact-buttons">
         <!-- Email -->
-        <a href="mailto:mariamrikadze30@gmail.com" class="btn btn-primary lang-ka">მომწერეთ მეილზე</a>
-        <a href="mailto:mariamrikadze30@gmail.com" class="btn btn-primary lang-en">Email me</a>
+        <a href="mailto:mariamrikadze30@gmail.com" class="platform-btn lang-ka">
+          <span class="platform-icon email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#F6F3EA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg>
+          </span>
+          <span>მომწერეთ მეილზე</span>
+        </a>
+        <a href="mailto:mariamrikadze30@gmail.com" class="platform-btn lang-en">
+          <span class="platform-icon email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#F6F3EA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg>
+          </span>
+          <span>Email me</span>
+        </a>
 
         <!-- WhatsApp -->
-        <a href="https://wa.me/995579192118" target="_blank" rel="noopener noreferrer" class="btn btn-primary lang-ka">WhatsApp</a>
-        <a href="https://wa.me/995579192118" target="_blank" rel="noopener noreferrer" class="btn btn-primary lang-en">WhatsApp</a>
+        <a href="https://wa.me/995579192118" target="_blank" rel="noopener noreferrer" class="platform-btn lang-ka">
+          <span class="platform-icon whatsapp">
+            <svg viewBox="0 0 24 24" fill="#F6F3EA"><path d="M12 2.2c-5.4 0-9.8 4.4-9.8 9.8 0 1.8.5 3.5 1.4 5L2 22l5.2-1.5c1.4.8 3.1 1.2 4.8 1.2 5.4 0 9.8-4.4 9.8-9.8S17.4 2.2 12 2.2Zm0 1.8c4.4 0 8 3.6 8 8s-3.6 8-8 8c-1.5 0-2.9-.4-4.1-1.1l-.3-.2-3 .9.9-2.9-.2-.3A7.9 7.9 0 0 1 4 12c0-4.4 3.6-8 8-8Zm-3 4c-.2 0-.5 0-.7.3-.2.3-.9.9-.9 2.1s.9 2.5 1 2.6c.1.2 1.8 2.8 4.4 3.8 2.2.9 2.6.7 3.1.6.5 0 1.6-.6 1.8-1.3.2-.6.2-1.2.2-1.3-.1-.1-.3-.2-.5-.3l-2-1c-.3-.1-.5-.2-.7.1-.2.3-.8 1-1 1.2-.2.2-.3.2-.6.1-.3-.2-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5H9Z"/></svg>
+          </span>
+          <span>WhatsApp</span>
+        </a>
+        <a href="https://wa.me/995579192118" target="_blank" rel="noopener noreferrer" class="platform-btn lang-en">
+          <span class="platform-icon whatsapp">
+            <svg viewBox="0 0 24 24" fill="#F6F3EA"><path d="M12 2.2c-5.4 0-9.8 4.4-9.8 9.8 0 1.8.5 3.5 1.4 5L2 22l5.2-1.5c1.4.8 3.1 1.2 4.8 1.2 5.4 0 9.8-4.4 9.8-9.8S17.4 2.2 12 2.2Zm0 1.8c4.4 0 8 3.6 8 8s-3.6 8-8 8c-1.5 0-2.9-.4-4.1-1.1l-.3-.2-3 .9.9-2.9-.2-.3A7.9 7.9 0 0 1 4 12c0-4.4 3.6-8 8-8Zm-3 4c-.2 0-.5 0-.7.3-.2.3-.9.9-.9 2.1s.9 2.5 1 2.6c.1.2 1.8 2.8 4.4 3.8 2.2.9 2.6.7 3.1.6.5 0 1.6-.6 1.8-1.3.2-.6.2-1.2.2-1.3-.1-.1-.3-.2-.5-.3l-2-1c-.3-.1-.5-.2-.7.1-.2.3-.8 1-1 1.2-.2.2-.3.2-.6.1-.3-.2-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5H9Z"/></svg>
+          </span>
+          <span>WhatsApp</span>
+        </a>
 
         <!-- Viber -->
-        <a href="viber://chat?number=%2B995579192118" class="btn btn-primary lang-ka">Viber</a>
-        <a href="viber://chat?number=%2B995579192118" class="btn btn-primary lang-en">Viber</a>
+        <a href="viber://chat?number=%2B995579192118" class="platform-btn lang-ka">
+          <span class="platform-icon viber">
+            <svg viewBox="0 0 24 24" fill="#F6F3EA"><path d="M12.1 2.5c-2.6 0-5 .7-6.7 2.2-1.6 1.4-2.4 3.4-2.4 5.9 0 2.6.9 4.7 2.7 6.1.2.1.3.3.3.6 0 .5-.1 1.6-.2 2.5 0 .3.2.6.5.6.1 0 .2 0 .3-.1l3-1.6c.2-.1.4-.1.6-.1.6.1 1.3.2 1.9.2 5.4 0 9.4-3.4 9.4-8.1S17.4 2.5 12.1 2.5Zm3.8 11.4c-.2.5-.9.9-1.4 1-1.4.3-3.6-.4-6-2.6-1.9-1.7-2.9-3.6-3.1-4.7-.1-.6.1-1.2.6-1.6l.6-.5c.3-.2.6-.2.8.1l1.2 1.6c.2.3.2.6 0 .8l-.5.6c-.1.2-.1.4 0 .6.3.6.9 1.4 1.6 2 .7.6 1.5 1.1 2.1 1.3.2.1.4.1.6-.1l.5-.6c.2-.2.5-.3.8-.1l1.7 1c.3.2.4.5.2.8l-.7.4Zm-2-6.2c1.2.1 2.1 1 2.2 2.2 0 .2.2.4.4.4h.1c.2 0 .4-.2.4-.5-.2-1.6-1.5-2.8-3.1-3-.2 0-.4.2-.5.4 0 .3.2.5.5.5Zm.2-1.9c2.3.2 4.1 2 4.4 4.3 0 .2.2.4.4.4h.1c.3 0 .4-.3.4-.5-.3-2.7-2.4-4.7-5.1-5-.3 0-.5.2-.5.4 0 .3.1.4.3.4Z"/></svg>
+          </span>
+          <span>Viber</span>
+        </a>
+        <a href="viber://chat?number=%2B995579192118" class="platform-btn lang-en">
+          <span class="platform-icon viber">
+            <svg viewBox="0 0 24 24" fill="#F6F3EA"><path d="M12.1 2.5c-2.6 0-5 .7-6.7 2.2-1.6 1.4-2.4 3.4-2.4 5.9 0 2.6.9 4.7 2.7 6.1.2.1.3.3.3.6 0 .5-.1 1.6-.2 2.5 0 .3.2.6.5.6.1 0 .2 0 .3-.1l3-1.6c.2-.1.4-.1.6-.1.6.1 1.3.2 1.9.2 5.4 0 9.4-3.4 9.4-8.1S17.4 2.5 12.1 2.5Zm3.8 11.4c-.2.5-.9.9-1.4 1-1.4.3-3.6-.4-6-2.6-1.9-1.7-2.9-3.6-3.1-4.7-.1-.6.1-1.2.6-1.6l.6-.5c.3-.2.6-.2.8.1l1.2 1.6c.2.3.2.6 0 .8l-.5.6c-.1.2-.1.4 0 .6.3.6.9 1.4 1.6 2 .7.6 1.5 1.1 2.1 1.3.2.1.4.1.6-.1l.5-.6c.2-.2.5-.3.8-.1l1.7 1c.3.2.4.5.2.8l-.7.4Zm-2-6.2c1.2.1 2.1 1 2.2 2.2 0 .2.2.4.4.4h.1c.2 0 .4-.2.4-.5-.2-1.6-1.5-2.8-3.1-3-.2 0-.4.2-.5.4 0 .3.2.5.5.5Zm.2-1.9c2.3.2 4.1 2 4.4 4.3 0 .2.2.4.4.4h.1c.3 0 .4-.3.4-.5-.3-2.7-2.4-4.7-5.1-5-.3 0-.5.2-.5.4 0 .3.1.4.3.4Z"/></svg>
+          </span>
+          <span>Viber</span>
+        </a>
 
         <!-- Facebook Messenger -->
-        <a href="https://m.me/rikadze.m3" target="_blank" rel="noopener noreferrer" class="btn btn-primary lang-ka">Facebook</a>
-        <a href="https://m.me/rikadze.m3" target="_blank" rel="noopener noreferrer" class="btn btn-primary lang-en">Facebook</a>
+        <a href="https://m.me/rikadze.m3" target="_blank" rel="noopener noreferrer" class="platform-btn lang-ka">
+          <span class="platform-icon messenger">
+            <svg viewBox="0 0 24 24" fill="#F6F3EA"><path d="M12 2C6.5 2 2 6.1 2 11.4c0 2.9 1.4 5.5 3.6 7.3v3.3l3.3-1.8c.9.2 1.9.4 3.1.4 5.5 0 10-4.1 10-9.4C22 6.1 17.5 2 12 2Zm1 12.6-2.6-2.7-5 2.7 5.5-5.8 2.6 2.7 5-2.7L13 14.6Z"/></svg>
+          </span>
+          <span>Facebook</span>
+        </a>
+        <a href="https://m.me/rikadze.m3" target="_blank" rel="noopener noreferrer" class="platform-btn lang-en">
+          <span class="platform-icon messenger">
+            <svg viewBox="0 0 24 24" fill="#F6F3EA"><path d="M12 2C6.5 2 2 6.1 2 11.4c0 2.9 1.4 5.5 3.6 7.3v3.3l3.3-1.8c.9.2 1.9.4 3.1.4 5.5 0 10-4.1 10-9.4C22 6.1 17.5 2 12 2Zm1 12.6-2.6-2.7-5 2.7 5.5-5.8 2.6 2.7 5-2.7L13 14.6Z"/></svg>
+          </span>
+          <span>Facebook</span>
+        </a>
       </div>
 
       <div class="contact-details">
