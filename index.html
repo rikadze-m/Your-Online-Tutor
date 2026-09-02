@@ -11,14 +11,15 @@
   :root{
     --paper:#F6F3EA;
     --paper-soft:#EFE9DA;
-    --ink:#182238;
-    --ink-soft:#3A3F4C;
+    --ink:#1E1B24;
+    --ink-soft:#3C3640;
     --cream:#F6F3EA;
-    --gold:#B07C2C;
-    --gold-dark:#8F631F;
-    --teal:#5C7A80;
-    --line:rgba(24,34,56,0.14);
-    --grid:rgba(24,34,56,0.055);
+    --burgundy:#7A2E3A;
+    --burgundy-dark:#5C222B;
+    --burgundy-light:#B5636F;
+    --muted:#8A6F73;
+    --line:rgba(30,27,36,0.14);
+    --grid:rgba(30,27,36,0.055);
     --radius:2px;
   }
 
@@ -79,7 +80,12 @@
   .hero{padding:96px 0 88px; position:relative; overflow:hidden;}
   .hero-inner{display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center;}
   @media(max-width:860px){ .hero-inner{grid-template-columns:1fr;} }
-  .hero h1{font-size:clamp(2.1rem, 4vw, 3.1rem); line-height:1.12; max-width:14ch;}
+  .hero h1{
+    font-size:clamp(1.8rem, 3.2vw, 2.6rem);
+    line-height:1.2;
+    max-width:32ch;
+    text-wrap:balance;
+  }
   .hero .lead{font-size:1.1rem; color:var(--ink-soft); max-width:46ch; margin:18px 0 32px;}
   .hero-actions{display:flex; gap:14px; flex-wrap:wrap;}
 
@@ -88,8 +94,8 @@
     font-size:0.95rem; font-weight:500; text-decoration:none;
     transition:transform .15s ease, box-shadow .15s ease;
   }
-  .btn-primary{background:var(--gold); color:var(--paper);}
-  .btn-primary:hover{background:var(--gold-dark); transform:translateY(-1px);}
+  .btn-primary{background:var(--burgundy); color:var(--paper);}
+  .btn-primary:hover{background:var(--burgundy-dark); transform:translateY(-1px);}
   .btn-ghost{border:1px solid var(--line); color:var(--ink);}
   .btn-ghost:hover{border-color:var(--ink);}
 
@@ -98,26 +104,47 @@
     align-items:center; gap:16px;
   }
   @media(max-width:860px){ .hero-visual{max-width:320px; margin:0 auto;} }
-  .visual-equation{color:var(--gold); font-size:0.95rem;}
+  .visual-equation{color:var(--burgundy); font-size:0.95rem;}
   #pi-canvas{width:100%; max-width:288px; height:auto; aspect-ratio:1/1; display:block; transition:opacity 0.9s ease;}
 
   /* section rhythm */
   section{padding:76px 0;}
   .section-soft{background:var(--paper-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
-  .kicker{font-size:0.95rem; color:var(--teal); font-family:'IBM Plex Mono',monospace; margin-bottom:10px;}
+  .kicker{font-size:0.95rem; color:var(--muted); font-family:'IBM Plex Mono',monospace; margin-bottom:10px;}
   .section-head{max-width:56ch; margin-bottom:44px;}
   .section-head p{color:var(--ink-soft); font-size:1.05rem;}
+  .section-head h2{
+    font-size:clamp(1.75rem, 2.6vw, 2.35rem);
+    font-weight:700;
+    display:inline-block;
+  }
+  .section-head h2::after{
+    content:"";
+    display:block;
+    width:48px; height:3px;
+    background:var(--burgundy);
+    margin-top:14px;
+    border-radius:2px;
+  }
+  .contact .section-head h2::after{background:var(--burgundy-light);}
 
   /* about */
   .about-grid{display:grid; grid-template-columns:0.8fr 1.2fr; gap:56px; align-items:start;}
   @media(max-width:780px){ .about-grid{grid-template-columns:1fr; gap:28px;} }
+  .about-photo{
+    width:180px; height:220px; margin-top:22px; border-radius:10px; overflow:hidden;
+    background:var(--paper-soft); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .about-photo img{width:100%; height:100%; object-fit:cover; display:block;}
+  .about-photo.no-photo::after{content:"profile.jpg"; font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-soft); opacity:0.55;}
   .credentials{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px;}
   .credentials li{
     padding-left:20px; position:relative; font-size:0.98rem; color:var(--ink-soft);
   }
   .credentials li::before{
     content:""; position:absolute; left:0; top:9px; width:7px; height:7px;
-    background:var(--gold); border-radius:50%;
+    background:var(--burgundy); border-radius:50%;
   }
   .about-text p{font-size:1.06rem;}
 
@@ -125,19 +152,19 @@
   .offer-list{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:0;}
   @media(max-width:700px){ .offer-list{grid-template-columns:1fr;} }
   .offer-list li{
-    border-left:2px solid var(--gold); padding:6px 0 6px 22px; margin:0 24px 30px 0;
+    border-left:2px solid var(--burgundy); padding:6px 0 6px 22px; margin:0 24px 30px 0;
   }
   .offer-list h3{font-size:1.08rem; margin-bottom:6px;}
   .offer-list p{margin:0; color:var(--ink-soft); font-size:0.98rem;}
 
   /* subjects */
-  .subjects-grid{display:grid; grid-template-columns:1fr 1px 1fr; gap:48px; align-items:start;}
+  .subjects-grid{display:grid; grid-template-columns:1fr 1px 1fr 1px 1fr; gap:36px; align-items:start;}
   @media(max-width:780px){ .subjects-grid{grid-template-columns:1fr; gap:32px;} }
   .subjects-grid .divider{background:var(--line);}
   @media(max-width:780px){ .subjects-grid .divider{display:none;} }
   .subjects-grid h3{font-size:1.2rem; margin-bottom:14px;}
   .subjects-grid .range{
-    font-family:'IBM Plex Mono',monospace; color:var(--gold); font-size:1.6rem; display:block; margin-bottom:6px;
+    font-family:'IBM Plex Mono',monospace; color:var(--burgundy); font-size:1.6rem; display:block; margin-bottom:6px;
   }
   .subjects-grid ul{
   list-style:none; margin:16px 0 0; padding:0;
@@ -152,14 +179,14 @@
 .subjects-grid li:last-child{border-bottom:none;}
 .subjects-grid li::before{
   content:"—"; position:absolute; left:0; top:11px;
-  color:var(--gold); font-family:'IBM Plex Mono',monospace;
+  color:var(--burgundy); font-family:'IBM Plex Mono',monospace;
 }
 .subjects-grid li:hover{padding-left:26px; color:var(--ink);}
   /* how it works */
   .steps{list-style:none; margin:0; padding:0; counter-reset:step; display:grid; gap:28px;}
   .steps li{display:flex; gap:20px; align-items:flex-start;}
   .steps .num{
-    font-family:'IBM Plex Mono',monospace; color:var(--gold); font-size:1.1rem;
+    font-family:'IBM Plex Mono',monospace; color:var(--burgundy); font-size:1.1rem;
     border:1px solid var(--line); border-radius:50%; width:40px; height:40px;
     display:flex; align-items:center; justify-content:center; flex-shrink:0; background:var(--paper);
   }
@@ -170,9 +197,10 @@
   .contact{background:var(--ink); color:var(--paper);}
   .contact h2{color:var(--paper);}
   .contact .section-head p{color:rgba(246,243,234,0.78);}
-  .contact-inner{display:flex; flex-direction:column; align-items:flex-start; gap:22px;}
+  .contact-inner{display:flex; flex-direction:column; align-items:flex-start; gap:28px;}
+  .contact-buttons{display:flex; flex-wrap:wrap; gap:14px;}
   .contact .btn-primary{padding:15px 32px; font-size:1rem;}
-  .contact-details{margin-top:4px;}
+  .contact-details{margin-top:0;}
   .contact-name{margin:0 0 4px; font-family:'Fraunces','IBM Plex Sans Georgian',serif; font-size:1.05rem; color:var(--paper);}
   .contact-phone{margin:0; font-size:0.95rem;}
   .contact-phone a{color:rgba(246,243,234,0.78); text-decoration:none; border-bottom:1px solid rgba(246,243,234,0.35);}
@@ -225,6 +253,10 @@
       <div class="kicker lang-en">About me</div>
       <h2 class="lang-ka">მარიამ რიკაძე</h2>
       <h2 class="lang-en">Mariam Rikadze</h2>
+      <!-- TODO: upload a photo named profile.jpg to the same folder as index.html on GitHub -->
+      <div class="about-photo">
+        <img src="profile.jpg" alt="მარიამ რიკაძე" onerror="this.parentElement.classList.add('no-photo'); this.remove();">
+      </div>
     </div>
     <div>
       <div class="about-text">
@@ -233,7 +265,7 @@
       </div>
       <ul class="credentials">
         <li class="lang-ka">სკოლა დავასრულე ოქროს მედალზე</li>
-        <li class="lang-en">Graduated with a Gold Medal</li> 
+        <li class="lang-en">Graduated with a Gold Medal</li>
         <li class="lang-ka">ვსწავლობ 100%-იანი სახელმწიფო გრანტით</li>
         <li class="lang-en">Studying on a full (100%) state grant</li>
         <li class="lang-ka">წარმატებით ჩავაბარე მასწავლებლის სასერტიფიკაციო გამოცდა (VII-XII)</li>
@@ -306,7 +338,7 @@
 <div class="divider"></div>
 
 <div>
-  <span class="range mono">EXAM</span>
+  <span class="range mono">Exam</span>
   <h3 class="lang-ka">აბიტურიენტების მომზადება</h3>
   <h3 class="lang-en">University Entrance Exam Preparation</h3>
   <p class="lang-ka">
@@ -322,7 +354,7 @@
 <div class="divider"></div>
 
 <div>
-  <span class="range mono">UNI</span>
+  <span class="range mono">University</span>
   <h3 class="lang-ka">საუნივერსიტეტო მათემატიკა</h3>
   <h3 class="lang-en">University Mathematics</h3>
   <ul>
@@ -334,12 +366,6 @@
 
     <li class="lang-ka">ნამდვილი ანალიზი</li>
     <li class="lang-en">Real Analysis</li>
-
-    <li class="lang-ka">სტატისტიკა</li>
-    <li class="lang-en">Statistics</li>
-
-    <li class="lang-ka">ფინანსური მათემატიკა</li>
-    <li class="lang-en">Financial Mathematics</li>
 
     <li class="lang-ka">კომპლექსური ანალიზი</li>
     <li class="lang-en">Complex Analysis</li>
@@ -392,7 +418,7 @@
 <section class="contact" id="contact">
   <div class="wrap">
     <div class="section-head">
-      <div class="kicker" style="color:#B07C2C;">
+      <div class="kicker" style="color:var(--burgundy-light);">
         <span class="lang-ka">დაიწყეთ დღეს</span>
         <span class="lang-en">Start today</span>
       </div>
@@ -403,65 +429,32 @@
     </div>
     <div class="contact-inner">
 
-  <!-- Email -->
-  <a href="mailto:mariamrikadze30@gmail.com" class="btn btn-primary lang-ka">
-    მომწერეთ მეილზე
-  </a>
-  <a href="mailto:mariamrikadze30@gmail.com" class="btn btn-primary lang-en">
-    Email me
-  </a>
+      <div class="contact-buttons">
+        <!-- Email -->
+        <a href="mailto:mariamrikadze30@gmail.com" class="btn btn-primary lang-ka">მომწერეთ მეილზე</a>
+        <a href="mailto:mariamrikadze30@gmail.com" class="btn btn-primary lang-en">Email me</a>
 
-  <!-- WhatsApp -->
-  <a href="https://wa.me/995579192118"
-     target="_blank"
-     rel="noopener noreferrer"
-     class="btn btn-primary lang-ka">
-    WhatsApp
-  </a>
-  <a href="https://wa.me/995579192118"
-     target="_blank"
-     rel="noopener noreferrer"
-     class="btn btn-primary lang-en">
-    WhatsApp
-  </a>
+        <!-- WhatsApp -->
+        <a href="https://wa.me/995579192118" target="_blank" rel="noopener noreferrer" class="btn btn-primary lang-ka">WhatsApp</a>
+        <a href="https://wa.me/995579192118" target="_blank" rel="noopener noreferrer" class="btn btn-primary lang-en">WhatsApp</a>
 
-  <!-- Viber -->
-  <a href="viber://chat?number=%2B995579192118"
-     class="btn btn-primary lang-ka">
-    Viber
-  </a>
-  <a href="viber://chat?number=%2B995579192118"
-     class="btn btn-primary lang-en">
-    Viber
-  </a>
+        <!-- Viber -->
+        <a href="viber://chat?number=%2B995579192118" class="btn btn-primary lang-ka">Viber</a>
+        <a href="viber://chat?number=%2B995579192118" class="btn btn-primary lang-en">Viber</a>
 
-  <!-- Facebook Messenger -->
-  <!-- შეცვალე YOUR_FACEBOOK_USERNAME შენი Facebook username-ით -->
-  <a href="https://m.me/rikadze.m3"
-   target="_blank"
-   rel="noopener noreferrer"
-   class="btn btn-primary lang-ka">
-  Facebook
-</a>
-  <a href="https://m.me/rikadze.m3"
-   target="_blank"
-   rel="noopener noreferrer"
-   class="btn btn-primary lang-en">
-  Facebook
-</a>
+        <!-- Facebook Messenger -->
+        <a href="https://m.me/rikadze.m3" target="_blank" rel="noopener noreferrer" class="btn btn-primary lang-ka">Facebook</a>
+        <a href="https://m.me/rikadze.m3" target="_blank" rel="noopener noreferrer" class="btn btn-primary lang-en">Facebook</a>
+      </div>
 
-  <div class="contact-details">
-    <p class="contact-name">მარიამ რიკაძე</p>
+      <div class="contact-details">
+        <p class="contact-name">მარიამ რიკაძე</p>
+        <p class="contact-phone">
+          <a href="tel:+995579192118">+995 579 19 21 18</a>
+        </p>
+      </div>
 
-    <!-- Phone -->
-    <p class="contact-phone">
-      <a href="tel:+995579192118">
-        +995 579 19 21 18
-      </a>
-    </p>
-  </div>
-
-</div>
+    </div>
   </div>
 </section>
 
@@ -509,7 +502,7 @@
 
     function drawFull(){
       ctx.clearRect(0, 0, size, size);
-      ctx.strokeStyle = 'rgba(176,124,44,0.6)';
+      ctx.strokeStyle = 'rgba(122,46,58,0.6)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       var p0 = pointAt(0);
@@ -539,7 +532,7 @@
         last = pointAt(0);
       }
       if(theta < thetaMax){
-        ctx.strokeStyle = 'rgba(176,124,44,0.6)';
+        ctx.strokeStyle = 'rgba(122,46,58,0.6)';
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(last.x, last.y);
